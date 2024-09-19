@@ -7,7 +7,47 @@
             //unicode to show the squares, and setting a unicode standard output
             Console.OutputEncoding = System.Text.Encoding.Unicode;
 
-            void avgränsare()
+            static int tryCatch(int input, int min, int max)
+            {
+                bool wrong = true;
+                while (wrong)
+                {
+                    try
+                    {
+                        input = Convert.ToInt32(Console.ReadLine());
+                        wrong = false;
+                    }
+                    catch (FormatException)
+                    {
+                        Console.WriteLine($"Ojdå. Det blev ett fel där. välj ett tal mellan {min} och {max}!");
+                    }
+                }
+                return input;
+            }
+            static int IntErrorInput(int input, int min, int max) //LÄGG IN DETTA I KODEN!!!!
+            {
+                bool error = true;
+
+                while (error)
+                {
+
+                    if (input >= min && input <= max)
+                    {
+                        error = false;
+                    }
+                    else
+                    {
+
+                        Console.WriteLine($"Ojdå. Vänligen skriv in ett tal mellan {min} och {max}: ");
+                        input = Convert.ToInt32(Console.ReadLine());
+                        separator();
+
+                    }
+                }
+                return input;
+            }
+
+            static void separator()
             {
                 Console.WriteLine("----------------------------------------------------------");
             }
@@ -20,15 +60,38 @@
                 int randomNumber = random.Next(1, 21);
 
                 Console.WriteLine("🥳🥳🥳 Välkommen! Till gissa talet leken!🥳🥳🥳");
-                avgränsare();
+                separator();
                 Console.WriteLine("Jag tänker på ett nummer mellan 1-20.🤔");
                 Console.WriteLine("Kan du gissa vilket? Du får fem försök: ");
                 int guessednum = 0;
-                int tries = 1;
+                int tries = 0;
 
                 while (guessednum != randomNumber)
                 {
-                    guessednum = Convert.ToInt32(Console.ReadLine());
+                    guessednum = tryCatch(guessednum, 1, 20);
+                    guessednum = IntErrorInput(guessednum, 1, 20);
+                    
+
+                    tries++;
+
+                    
+                    if (guessednum > randomNumber)
+                    {
+                        Console.WriteLine("Oj du gissade för HÖGT!🤯");
+                        separator();
+                        Console.WriteLine("Gissa igen: ");
+                    }                                                      
+                    else if (guessednum < randomNumber)
+                    {
+                        Console.WriteLine("Oj du gissade för LÅGT!🥴");
+                        separator();
+                        Console.WriteLine("Gissa igen: ");
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Du gissade korrekt. Rätt tal är {randomNumber} 🥳");
+                        break;
+                    }
 
                     if (tries == 5)
                     {
@@ -37,24 +100,7 @@
                         Console.WriteLine($"Rätt tal var {randomNumber}!");
                         break;
                     }
-                    else if (guessednum > randomNumber)
-                    {
-                        Console.WriteLine("Oj du gissade för HÖGT!🤯");
-                        avgränsare();
-                        Console.WriteLine("Gissa igen: ");
-                    }                                                       //////// OM JAG SVARAR RÄTT PÅ 5e försöket så räknas inte det!!!
-                    else if (guessednum < randomNumber)
-                    {
-                        Console.WriteLine("Oj du gissade för LÅGT!🥴");
-                        avgränsare();
-                        Console.WriteLine("Gissa igen: ");
-                    }
-                    else
-                    {
-                        Console.WriteLine($"Du gissade korrekt. Rätt tal är {randomNumber} 🥳");
-                        break;
-                    }
-                    tries++;
+
 
                 }
                 Console.WriteLine("Vill du splea igen? ja/nej ");
@@ -67,7 +113,7 @@
                 else
                 {
                     Console.WriteLine("Spelet avslutas");
-                    avgränsare();
+                    separator();
                     Console.WriteLine("Hejdååå!😘");
                     playAgain = false;
                     
